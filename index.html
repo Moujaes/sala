@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A ficha do lugar · Moujaës</title>
+<meta name="description" content="Escolhe um cômodo da sua casa, responde quatro coisas sobre ele e vê para que ele é bom. Depois, dez minutos em outra sala.">
+<meta property="og:title" content="A ficha do lugar · Moujaës">
+<meta property="og:description" content="Escolhe um cômodo da sua casa, responde quatro coisas sobre ele e vê para que ele é bom.">
+<meta name="theme-color" content="#F3EEE4">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="assets/avatar.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --papel: #F3EEE4;
+    --ficha: #F9F5EC;
+    --tinta: #1C1A17;
+    --sepia: #C2B596;
+    --bordo: #4C1E26;
+    --cinza: #6B655C;
+    --serifa: "Bodoni Moda", "Bodoni 72", Didot, "Times New Roman", serif;
+    --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    --mola: cubic-bezier(.3, 1.7, .5, 1);
+    /* grão de papel: ruído fino em tinta, e manchas largas por baixo */
+    --grao: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .1 0 0 0 0 .09 .62 0 0 0 -.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    --manchas: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='700'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006 .011' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .54 0 0 0 0 .35 0 0 0 0 .2 .34 0 0 0 -.11'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+    --grao-claro: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .95 0 0 0 0 .93 0 0 0 0 .89 .4 0 0 0 -.145'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    /* tinta de carimbo: falhas pequenas, como borracha em papel */
+    --falhas: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='2' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 7 0 0 0 -2.05'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--grao), var(--manchas), var(--papel);
+    color: var(--tinta);
+    font-family: var(--mono);
+    font-size: 15px;
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+  .pagina { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+
+  .rotulo {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--cinza);
+  }
+
+  /* abertura */
+  .topo { padding: 30px 0 0; text-align: center; }
+  .topo img { width: 168px; max-width: 50%; height: auto; display: block; margin: 0 auto; }
+  .abre { padding: 22px 0 4px; }
+  h1 {
+    font-family: var(--serifa);
+    font-weight: 500;
+    font-size: clamp(36px, 10.6vw, 58px);
+    line-height: 1.02;
+    letter-spacing: -.012em;
+    margin: 14px 0 18px;
+    text-wrap: balance;
+  }
+  h1 em, h2 em { font-style: italic; color: var(--bordo); }
+  .lead { margin: 0; max-width: 34em; }
+
+  /* fotos do arquivo, soltas sobre o papel */
+  .foto {
+    position: absolute;
+    display: block;
+    height: auto;
+    box-shadow: 0 1px 2px rgba(28, 26, 23, .22), 0 10px 22px rgba(28, 26, 23, .12);
+  }
+  .soltas { position: relative; max-width: 400px; aspect-ratio: 6 / 5; margin: 30px auto 8px; }
+  .soltas .f1 { width: 66%; left: 0; top: 3%; transform: rotate(-3deg); }
+  .soltas .f2 { width: 60%; right: 0; top: 45%; transform: rotate(2.5deg); }
+
+  /* a ficha */
+  .ficha {
+    position: relative;
+    background: var(--grao), var(--ficha);
+    border: 1px solid var(--sepia);
+    margin: 30px -6px 0;
+    box-shadow: 0 1px 0 rgba(28, 26, 23, .16), 0 18px 34px -22px rgba(28, 26, 23, .5);
+  }
+  .placar {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 9px 12px;
+    padding: 13px 15px 12px;
+    background: var(--grao), var(--ficha);
+    border-bottom: 1px solid var(--tinta);
+  }
+  .placar .rotulo { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #onde-placar { color: var(--bordo); }
+  #conta {
+    display: inline-block;
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    transform-origin: 100% 60%;
+  }
+  #conta.bate { animation: bate .34s var(--mola); }
+  @keyframes bate { from { transform: scale(1.22); } to { transform: scale(1); } }
+  .pips { grid-column: 1 / -1; display: flex; gap: 4px; }
+  .pips i { flex: 1; height: 4px; background: var(--sepia); transition: background-color .2s; }
+  .pips i.cheio { background: var(--tinta); }
+  .completa .pips i.cheio { background: var(--bordo); }
+
+  .perguntas { list-style: none; margin: 0; padding: 0; }
+  .pergunta {
+    padding: 20px 15px 22px;
+    border-bottom: 1px solid var(--sepia);
+    scroll-margin-top: 62px;
+    transition: background-color .2s;
+  }
+  .etiqueta {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--cinza);
+    margin: 0 0 8px;
+    transition: color .2s;
+  }
+  .q {
+    font-family: var(--serifa);
+    font-weight: 500;
+    font-size: clamp(24px, 6.7vw, 29px);
+    line-height: 1.1;
+    letter-spacing: -.005em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .porque { margin: 9px 0 0; font-size: 14px; line-height: 1.5; color: var(--cinza); }
+  .pergunta.respondida { background-color: rgba(76, 30, 38, .05); }
+  .pergunta.respondida .etiqueta { color: var(--bordo); }
+
+  /* as respostas: etiquetas de papel para tocar */
+  .respostas { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+  .respostas.comodos { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .respostas input { position: absolute; left: 0; top: 0; width: 1px; height: 1px; margin: 0; opacity: 0; pointer-events: none; }
+  .resp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 11px;
+    min-height: 54px;
+    padding: 0 10px;
+    border: 1.5px solid var(--tinta);
+    background: rgba(255, 255, 255, .6);
+    box-shadow: inset 0 1px 2px rgba(28, 26, 23, .1), 0 2px 0 rgba(28, 26, 23, .14);
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .3s var(--mola), background-color .18s, color .18s, border-color .18s, box-shadow .18s;
+  }
+  .comodos .resp { min-height: 48px; padding: 0 4px; font-size: 12px; letter-spacing: .08em; }
+  .resp svg { width: 22px; height: 22px; flex: none; overflow: visible; }
+  .resp .quadro { fill: none; stroke: currentColor; stroke-width: 1.5; }
+  .resp .visto {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 34;
+    stroke-dashoffset: 34;
+    transition: stroke-dashoffset .26s cubic-bezier(.3, .7, .2, 1);
+  }
+  .resp:active { transform: scale(.95); }
+  .respostas input:checked + .resp {
+    background: var(--grao-claro), var(--bordo);
+    border-color: var(--bordo);
+    color: var(--papel);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .25), 0 1px 0 rgba(28, 26, 23, .1);
+    transform: translateY(1px);
+  }
+  .respostas input:checked + .resp .visto { stroke-dashoffset: 0; }
+  .respostas input:focus-visible + .resp { outline: 2px solid var(--bordo); outline-offset: 3px; }
+  @media (hover: hover) {
+    .resp:hover { border-color: var(--bordo); }
+  }
+
+  /* o resultado: um carimbo */
+  .resultado { padding: 24px 15px 24px; text-align: center; }
+  .vaga {
+    position: relative;
+    width: 268px;
+    max-width: 100%;
+    min-height: 132px;
+    margin: 4px auto 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px dashed var(--sepia);
+    transform: rotate(-5deg);
+    transition: border-color .2s;
+  }
+  .vaga .espera { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--cinza); transition: opacity .15s; }
+  .selo {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 12px 14px 11px;
+    border: 3px solid var(--bordo);
+    box-shadow: inset 0 0 0 3px var(--ficha), inset 0 0 0 4.5px var(--bordo);
+    color: var(--bordo);
+    font-family: var(--mono);
+    text-transform: uppercase;
+    opacity: 0;
+    -webkit-mask-image: var(--falhas);
+    mask-image: var(--falhas);
+    -webkit-mask-size: 200px 200px;
+    mask-size: 200px 200px;
+  }
+  .selo .sobre { font-size: 9.5px; letter-spacing: .2em; font-weight: 500; }
+  .selo .bom { font-size: 13px; letter-spacing: .3em; font-weight: 600; margin-top: 4px; }
+  .selo .para { font-family: var(--serifa); font-style: italic; text-transform: none; font-size: 33px; line-height: 1; font-weight: 600; letter-spacing: -.005em; }
+  .completa .vaga { border-color: transparent; }
+  .completa .vaga .espera { opacity: 0; }
+  .completa .selo { opacity: 1; }
+  .carimbando .selo { animation: carimba .42s cubic-bezier(.2, .8, .3, 1) .35s both; }
+  @keyframes carimba {
+    0% { opacity: 0; transform: scale(1.7); }
+    55% { opacity: 1; transform: scale(.95); }
+    78% { transform: scale(1.025); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  .linha { margin: 0 auto; max-width: 30em; font-size: 14.5px; line-height: 1.55; color: var(--cinza); }
+  .completa .linha { color: var(--tinta); }
+  .jogo {
+    margin: 18px auto 0;
+    max-width: 30em;
+    font-family: var(--serifa);
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.3;
+    color: var(--bordo);
+  }
+  .limpar {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--cinza);
+    background: none;
+    border: 0;
+    border-bottom: 1px solid var(--sepia);
+    border-radius: 0;
+    padding: 12px 0 4px;
+    margin-top: 10px;
+    min-height: 40px;
+    cursor: pointer;
+  }
+  .limpar:hover, .limpar:focus-visible { color: var(--bordo); border-color: var(--bordo); outline: none; }
+  .limpar[hidden] { display: none; }
+  .regra { margin: 22px 0 0; padding-top: 14px; border-top: 1px solid var(--sepia); font-size: 12px; line-height: 1.55; color: var(--cinza); text-align: left; }
+
+  /* o desafio */
+  .desafio {
+    position: relative;
+    background: var(--grao), var(--ficha);
+    border: 1px solid var(--sepia);
+    margin: 48px -6px 0;
+    padding: 24px 15px 22px;
+    transform: rotate(-.5deg);
+    box-shadow: 0 1px 0 rgba(28, 26, 23, .16), 0 18px 34px -22px rgba(28, 26, 23, .5);
+  }
+  .desafio h2 {
+    font-family: var(--serifa);
+    font-weight: 500;
+    font-size: clamp(34px, 10vw, 46px);
+    line-height: 1;
+    letter-spacing: -.01em;
+    margin: 10px 0 14px;
+  }
+  .desafio .passos { margin: 0; padding: 0 0 0 1.4em; font-size: 14.5px; }
+  .desafio .passos li { margin: 0 0 6px; padding-left: .2em; }
+  .desafio .passos li::marker { color: var(--bordo); font-weight: 600; }
+  .relogio {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin: 20px 0 6px;
+    padding: 14px 0;
+    border-top: 1px solid var(--tinta);
+    border-bottom: 1px solid var(--tinta);
+  }
+  #tempo {
+    font-family: var(--serifa);
+    font-weight: 500;
+    font-size: 54px;
+    line-height: 1;
+    font-variant-numeric: tabular-nums lining-nums;
+    letter-spacing: -.01em;
+  }
+  .acabou #tempo { font-style: italic; color: var(--bordo); }
+  .botoes { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .botao {
+    min-width: 132px;
+    min-height: 50px;
+    padding: 0 16px;
+    border: 1.5px solid var(--tinta);
+    background: rgba(255, 255, 255, .6);
+    box-shadow: inset 0 1px 2px rgba(28, 26, 23, .1), 0 2px 0 rgba(28, 26, 23, .14);
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--tinta);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .3s var(--mola), background-color .18s, color .18s, border-color .18s;
+  }
+  .botao:active { transform: scale(.95); }
+  .correndo .botao.principal { background: var(--grao-claro), var(--bordo); border-color: var(--bordo); color: var(--papel); }
+  .botao:focus-visible { outline: 2px solid var(--bordo); outline-offset: 3px; }
+  .zerar { background: none; border: 0; padding: 6px 0 2px; font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--cinza); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+  .zerar[hidden] { display: none; }
+  #aviso-tempo { margin: 0; min-height: 1.5em; font-size: 12.5px; color: var(--cinza); }
+  .acabou #aviso-tempo { color: var(--bordo); font-weight: 500; }
+  .nota label { display: block; margin: 16px 0 8px; }
+  .nota textarea {
+    display: block;
+    width: 100%;
+    min-height: 130px;
+    resize: vertical;
+    padding: 12px 13px;
+    border: 1.5px solid var(--tinta);
+    border-radius: 0;
+    background: rgba(255, 255, 255, .7);
+    color: var(--tinta);
+    font-family: var(--mono);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .nota textarea:focus { outline: 2px solid var(--bordo); outline-offset: 2px; border-color: var(--bordo); }
+  .nota .so-aqui { display: flex; justify-content: space-between; gap: 12px; margin: 8px 0 0; font-size: 11.5px; color: var(--cinza); }
+  #guardado { color: var(--bordo); white-space: nowrap; opacity: 0; transition: opacity .2s; }
+  #guardado.mostra { opacity: 1; }
+
+  /* de onde vem */
+  .historia { margin-top: 56px; }
+  .historia h2 {
+    font-family: var(--serifa);
+    font-weight: 500;
+    font-size: clamp(30px, 8.6vw, 42px);
+    line-height: 1.04;
+    margin: 10px 0 20px;
+  }
+  .fatos { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .fato {
+    background: var(--grao), var(--ficha);
+    border: 1px solid var(--sepia);
+    padding: 18px 16px 16px;
+    box-shadow: 0 1px 0 rgba(28, 26, 23, .12);
+  }
+  .fato:nth-child(1) { transform: rotate(-.6deg); }
+  .fato:nth-child(3) { transform: rotate(.5deg); }
+  .ano {
+    display: block;
+    font-family: var(--serifa);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 46px;
+    line-height: 1;
+    color: var(--bordo);
+    margin-bottom: 10px;
+  }
+  .fato p { margin: 0; font-size: 14.5px; line-height: 1.55; }
+  .fato .original { margin-top: 8px; font-size: 12.5px; color: var(--cinza); }
+  .fonte { display: block; margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--sepia); font-size: 11px; letter-spacing: .08em; color: var(--cinza); }
+  .fonte a { color: var(--tinta); text-underline-offset: 3px; overflow-wrap: anywhere; }
+  .fonte a:hover { color: var(--bordo); }
+
+  /* a frase */
+  .faixa {
+    background: var(--grao-claro), var(--bordo);
+    color: var(--papel);
+    margin-top: 56px;
+    padding: 46px 0 50px;
+  }
+  .faixa .rotulo { color: var(--papel); opacity: .74; }
+  .grande {
+    font-family: var(--serifa);
+    font-weight: 500;
+    font-size: clamp(36px, 10.6vw, 88px);
+    line-height: 1.02;
+    letter-spacing: -.018em;
+    margin: 16px 0 0;
+    text-wrap: balance;
+  }
+  .grande em { font-style: italic; }
+  .guarda { margin: 30px 0 0; font-size: 13px; letter-spacing: .04em; opacity: .86; max-width: 30em; }
+
+  /* rodapé */
+  .rodape { text-align: center; padding: 56px 0 44px; }
+  .carimbo-fim { display: block; width: 132px; height: auto; margin: 0 auto 26px; transform: rotate(-7deg); }
+  .rodape .wordmark { width: 230px; max-width: 70%; height: auto; display: block; margin: 0 auto 18px; }
+  .rodape .links { display: flex; justify-content: center; gap: 26px; }
+  .rodape a { font-family: var(--mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--tinta); text-underline-offset: 4px; padding: 8px 0; }
+  .rodape a:hover { color: var(--bordo); }
+  .rodape .arroba { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; color: var(--cinza); margin-top: 8px; }
+
+  @media (min-width: 560px) {
+    .ficha, .desafio { margin-left: 0; margin-right: 0; }
+    .placar { padding: 15px 22px 13px; }
+    .pergunta { padding: 24px 22px 26px; }
+    .respostas { max-width: 380px; }
+    .respostas.comodos { max-width: 440px; }
+    .resultado { padding: 28px 22px 28px; }
+    .desafio { padding: 28px 24px 24px; }
+    .fatos { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (min-width: 980px) {
+    .topo { text-align: left; padding-top: 34px; }
+    .topo img { margin: 0; }
+    .duas { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 60px; align-items: start; }
+    .abre { position: sticky; top: 12px; padding-top: 30px; }
+    .soltas { margin-left: 0; }
+    .ficha { margin-top: 34px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #conta.bate, .carimbando .selo { animation: none; }
+    .resp, .resp .visto, .pips i, .botao { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="pagina">
+
+  <div class="topo">
+    <img src="assets/wm-v3-b-179-sp-tinta.svg" alt="Moujaës, número 179, São Paulo" width="168" height="59">
+  </div>
+
+  <main class="duas">
+
+    <header class="abre">
+      <div class="rotulo">Material do vídeo · para fazer em casa</div>
+      <h1>Um lugar que te <em>devolve</em> pra você.</h1>
+      <p class="lead">Escolhe um cômodo da sua casa. Responde quatro coisas sobre ele e vê para que ele é bom. Depois, passa dez minutos em outra sala.</p>
+      <div class="soltas">
+        <img class="foto f1" src="assets/arquivo-p03-02.jpg" alt="Foto de arquivo: a margem de um rio vista de um barco." width="720" height="505">
+        <img class="foto f2" src="assets/arquivo-p05-03.jpg" alt="Foto de arquivo: barcos num rio." width="720" height="501">
+      </div>
+    </header>
+
+    <section class="ficha" id="ficha" aria-label="A ficha do lugar">
+      <div class="placar">
+        <span class="rotulo">A ficha · <span id="onde-placar">do lugar</span></span>
+        <output id="conta" aria-live="polite">0 de 4</output>
+        <div class="pips" id="pips" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      </div>
+
+      <div class="pergunta" id="q0">
+        <span class="etiqueta">00 · O cômodo</span>
+        <h2 class="q" id="q0-t">Qual cômodo da sua casa?</h2>
+        <p class="porque">Escolhe um em que você passa tempo. Se puder, responde de dentro dele.</p>
+        <div class="respostas comodos" role="radiogroup" aria-labelledby="q0-t">
+          <input type="radio" name="c" id="c-sala" value="sala"><label class="resp" for="c-sala">Sala</label>
+          <input type="radio" name="c" id="c-quarto" value="quarto"><label class="resp" for="c-quarto">Quarto</label>
+          <input type="radio" name="c" id="c-cozinha" value="cozinha"><label class="resp" for="c-cozinha">Cozinha</label>
+          <input type="radio" name="c" id="c-escritorio" value="escritorio"><label class="resp" for="c-escritorio">Escritório</label>
+          <input type="radio" name="c" id="c-varanda" value="varanda"><label class="resp" for="c-varanda">Varanda</label>
+          <input type="radio" name="c" id="c-outro" value="outro"><label class="resp" for="c-outro">Outro</label>
+        </div>
+      </div>
+
+      <ol class="perguntas">
+        <li class="pergunta" id="q1">
+          <span class="etiqueta">01 · O teto</span>
+          <h2 class="q" id="q1-t">O teto parece alto ou baixo?</h2>
+          <p class="porque">Não precisa medir. Vale a sensação de quem entra.</p>
+          <div class="respostas" role="radiogroup" aria-labelledby="q1-t">
+            <input type="radio" name="p1" id="p1-l" value="l">
+            <label class="resp" for="p1-l"><svg viewBox="0 0 22 22" aria-hidden="true"><rect class="quadro" x="1.5" y="3.5" width="16" height="16"/><path class="visto" d="M4.5 11.5 L9 16.5 L20 2.5"/></svg>Alto</label>
+            <input type="radio" name="p1" id="p1-p" value="p">
+            <label class="resp" for="p1-p"><svg viewBox="0 0 22 22" aria-hidden="true"><rect class="quadro" x="1.5" y="3.5" width="16" height="16"/><path class="visto" d="M4.5 11.5 L9 16.5 L20 2.5"/></svg>Baixo</label>
+          </div>
+        </li>
+        <li class="pergunta" id="q2">
+          <span class="etiqueta">02 · A luz</span>
+          <h2 class="q" id="q2-t">A luz é amarela ou branca?</h2>
+          <p class="porque">A que fica acesa quando você está lá.</p>
+          <div class="respostas" role="radiogroup" aria-labelledby="q2-t">
+            <input type="radio" name="p2" id="p2-l" value="l">
+            <label class="resp" for="p2-l"><svg viewBox="0 0 22 22" aria-hidden="true"><rect class="quadro" x="1.5" y="3.5" width="16" height="16"/><path class="visto" d="M4.5 11.5 L9 16.5 L20 2.5"/></svg>Amarela</label>
+            <input type="radio" name="p2" id="p2-p" value="p">
+            <label class="resp" for="p2-p"><svg viewBox="0 0 22 22" aria-hidden="true"><rect class="quadro" x="1.5" y="3.5" width="16" height="16"/><path class="visto" d="M4.5 11.5 L9 16.5 L20 2.5"/></svg>Branca</label>
+          </div>
+        </li>
+        <li class="pergunta" id="q3">
+          <span class="etiqueta">03 · A janela</span>
+          <h2 class="q" id="q3-t">Tem janela?</h2>
+          <p class="porque">Uma que mostra o lado de fora.</p>
+          <div class="respostas" role="radiogroup" aria-labelledby="q3-t">
+            <input type="radio" name="p3" id="p3-l" value="l">
+            <label class="resp" for="p3-l"><svg viewBox="0 0 22 22" aria-hidden="true"><rect class="quadro" x="1.5" y="3.5" width="16" height="16"/><path class="visto" d="M4.5 11.5 L9 16.5 L20 2.5"/></svg>Tem</label>
+            <input type="radio" name="p3" id="p3-p" value="p">
+            <label class="resp" for="p3-p"><svg viewBox="0 0 22 22" aria-hidden="true"><rect class="quadro" x="1.5" y="3.5" width="16" height="16"/><path class="visto" d="M4.5 11.5 L9 16.5 L20 2.5"/></svg>Não tem</label>
+          </div>
+        </li>
+        <li class="pergunta" id="q4">
+          <span class="etiqueta">04 · O som</span>
+          <h2 class="q" id="q4-t">Tem barulho?</h2>
+          <p class="porque">Para um instante e escuta: rua, televisão, gente passando.</p>
+          <div class="respostas" role="radiogroup" aria-labelledby="q4-t">
+            <input type="radio" name="p4" id="p4-p" value="p">
+            <label class="resp" for="p4-p"><svg viewBox="0 0 22 22" aria-hidden="true"><rect class="quadro" x="1.5" y="3.5" width="16" height="16"/><path class="visto" d="M4.5 11.5 L9 16.5 L20 2.5"/></svg>Tem</label>
+            <input type="radio" name="p4" id="p4-l" value="l">
+            <label class="resp" for="p4-l"><svg viewBox="0 0 22 22" aria-hidden="true"><rect class="quadro" x="1.5" y="3.5" width="16" height="16"/><path class="visto" d="M4.5 11.5 L9 16.5 L20 2.5"/></svg>Não tem</label>
+          </div>
+        </li>
+      </ol>
+
+      <div class="resultado" id="resultado">
+        <div class="vaga" aria-hidden="true">
+          <span class="espera" id="espera">Faltam quatro</span>
+          <div class="selo" id="selo">
+            <span class="sobre" id="selo-onde">Ficha do lugar</span>
+            <span class="bom">Bom para</span>
+            <span class="para" id="selo-para">pensar longe</span>
+          </div>
+        </div>
+        <div aria-live="polite">
+          <p class="linha" id="linha">Responde as quatro e o carimbo sai aqui.</p>
+        </div>
+        <p class="jogo">É um jogo, não um diagnóstico. O estudo mostra uma tendência, e só quando a pessoa repara no teto.</p>
+        <button class="limpar" id="limpar" type="button" hidden>Fazer de outro cômodo</button>
+        <p class="regra">Como a ficha conta: teto alto, luz amarela, janela e silêncio puxam para pensar longe. O contrário puxa para executar. Deu empate, decide o teto, que é o único dos quatro que o estudo mediu.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <section class="desafio" id="desafio" aria-labelledby="desafio-t">
+    <div class="rotulo">Desafio · dez minutos</div>
+    <h2 id="desafio-t">Mude de <em>sala.</em></h2>
+    <ol class="passos">
+      <li>Pega uma coisa que está parada faz dias: uma ideia, uma decisão, um texto.</li>
+      <li>Leva para outro cômodo. Se puder, o de teto mais alto da casa.</li>
+      <li>Liga o relógio e fica lá dez minutos com ela.</li>
+      <li>Em algum momento, olha para cima.</li>
+    </ol>
+    <div class="relogio">
+      <span id="tempo" role="timer" aria-live="off">10:00</span>
+      <div class="botoes">
+        <button class="botao principal" id="relogio-btn" type="button">Começar</button>
+        <button class="zerar" id="relogio-zerar" type="button" hidden>Zerar</button>
+      </div>
+    </div>
+    <p id="aviso-tempo" aria-live="polite"></p>
+    <div class="nota">
+      <label class="rotulo" for="nota">O que apareceu</label>
+      <textarea id="nota" placeholder="Escreve aqui o que veio nesses dez minutos."></textarea>
+      <p class="so-aqui"><span>Fica guardado só neste aparelho. Ninguém mais lê.</span><span id="guardado">Guardado.</span></p>
+    </div>
+  </section>
+
+  <section class="historia" aria-labelledby="historia-t">
+    <div class="rotulo">De onde vem</div>
+    <h2 id="historia-t">Quem <em>reparou</em> no lugar antes.</h2>
+    <ol class="fatos">
+      <li class="fato">
+        <span class="ano">1943</span>
+        <p>A Câmara dos Comuns, em Londres, foi destruída por bombas em 1941. Dois anos depois, discutindo como reconstruí-la, Churchill disse: “Nós damos forma aos nossos prédios, e depois os nossos prédios dão forma a nós.”</p>
+        <p class="original">No original: “We shape our buildings and afterwards our buildings shape us.”</p>
+        <span class="fonte">Fonte: <a href="https://api.parliament.uk/historic-hansard/commons/1943/oct/28/house-of-commons-rebuilding" rel="noopener">Hansard, 28 de outubro de 1943</a></span>
+      </li>
+      <li class="fato">
+        <span class="ano">2007</span>
+        <p>Joan Meyers-Levy e Rui Zhu deram as mesmas tarefas a pessoas em salas de teto alto e de teto baixo. Debaixo do teto baixo, elas iam para o detalhe. Debaixo do teto alto, ligavam ideias. A diferença só apareceu quando as pessoas reparavam no teto.</p>
+        <span class="fonte">Fonte: <a href="https://doi.org/10.1086/519146" rel="noopener">Journal of Consumer Research, 34(2), 2007</a></span>
+      </li>
+      <li class="fato">
+        <span class="ano">2006</span>
+        <p>No livro <em>A arquitetura da felicidade</em>, o filósofo Alain de Botton escreve que a gente carrega várias versões de si mesmo, e que o lugar onde a gente está ajuda a decidir qual delas aparece.</p>
+        <span class="fonte">Fonte: Alain de Botton, <em>The Architecture of Happiness</em>, 2006</span>
+      </li>
+    </ol>
+  </section>
+</div>
+
+<section class="faixa" aria-label="A frase do vídeo">
+  <div class="pagina">
+    <div class="rotulo">A frase do vídeo</div>
+    <p class="grande">Talvez ela tá te esperando em um lugar com um teto <em>mais alto.</em></p>
+    <p class="guarda">Às vezes o que você precisa é mudar de sala.</p>
+  </div>
+</section>
+
+<div class="pagina">
+  <footer class="rodape">
+    <img class="carimbo-fim" src="assets/carimbo-barco-sp_transp.png" alt="" width="150" height="108" loading="lazy">
+    <img class="wordmark" src="assets/wm-v3-b-179-sp-tinta.svg" alt="Moujaës, número 179, São Paulo" width="230" height="81" loading="lazy">
+    <nav class="links" aria-label="Moujaës nas redes">
+      <a href="https://www.instagram.com/moujaes_________179/" rel="noopener">Instagram</a>
+      <a href="https://www.youtube.com/@lutchpromicia" rel="noopener">YouTube</a>
+    </nav>
+    <div class="arroba">@moujaes_________179</div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var CHAVE = "moujaes-sala-v1";
+  var TOTAL = 4;
+  var EXTENSO = ["", "uma", "duas", "três", "quatro"];
+  var NOMES = { sala: "Sala", quarto: "Quarto", cozinha: "Cozinha", escritorio: "Escritório", varanda: "Varanda", outro: "Outro cômodo" };
+  var RESULTADOS = {
+    longe: ["pensar longe", "Leva para lá o que ainda não tem forma: a ideia solta, a decisão grande, o plano. E olha para cima de vez em quando."],
+    perto: ["executar", "Leva para lá o que pede detalhe: a lista, a revisão, o que precisa sair pronto hoje."]
+  };
+
+  var ficha = document.getElementById("ficha");
+  var conta = document.getElementById("conta");
+  var espera = document.getElementById("espera");
+  var linha = document.getElementById("linha");
+  var limpar = document.getElementById("limpar");
+  var ondePlacar = document.getElementById("onde-placar");
+  var seloOnde = document.getElementById("selo-onde");
+  var seloPara = document.getElementById("selo-para");
+  var pips = Array.prototype.slice.call(document.querySelectorAll("#pips i"));
+  var comodos = Array.prototype.slice.call(document.querySelectorAll('input[name="c"]'));
+  var perguntas = [];
+  for (var i = 1; i <= TOTAL; i++) {
+    perguntas.push({
+      li: document.getElementById("q" + i),
+      l: document.getElementById("p" + i + "-l"),
+      p: document.getElementById("p" + i + "-p")
+    });
+  }
+
+  // #r=llpl&c=sala (ou ?r=…) abre a página já respondida, sem ler nem gravar neste navegador.
+  // Uma letra por pergunta: l = puxa para pensar longe, p = puxa para executar, - = em branco.
+  function daUrl(nome, padrao) {
+    var re = new RegExp("(?:^|[#?&])" + nome + "=(" + padrao + ")", "i");
+    var m = re.exec(location.hash) || re.exec(location.search);
+    return m ? m[1].toLowerCase() : null;
+  }
+  var pedido = daUrl("r", "[lp\\-]*");
+  var pedidoComodo = daUrl("c", "[a-z]*");
+  var guarda = pedido === null;
+
+  function estado() {
+    return perguntas.map(function (q) { return q.l.checked ? "l" : q.p.checked ? "p" : "-"; }).join("");
+  }
+  function comodo() {
+    for (var i = 0; i < comodos.length; i++) if (comodos[i].checked) return comodos[i].value;
+    return "";
+  }
+  function aplicar(texto, c) {
+    perguntas.forEach(function (q, i) {
+      var ch = (texto || "").charAt(i);
+      q.l.checked = ch === "l";
+      q.p.checked = ch === "p";
+    });
+    comodos.forEach(function (r) { r.checked = r.value === c; });
+  }
+  function ler() {
+    try { return JSON.parse(localStorage.getItem(CHAVE)) || {}; } catch (e) { return {}; }
+  }
+  function gravar(campos) {
+    if (!guarda) return;
+    try {
+      var d = ler();
+      for (var k in campos) d[k] = campos[k];
+      localStorage.setItem(CHAVE, JSON.stringify(d));
+    } catch (e) {}
+  }
+
+  var antes = -1;
+  function atualizar(porToque) {
+    var e = estado();
+    var n = 0;
+    var longe = 0;
+    perguntas.forEach(function (q, i) {
+      var ch = e.charAt(i);
+      var respondida = ch !== "-";
+      if (respondida) n++;
+      if (ch === "l") longe++;
+      q.li.classList.toggle("respondida", respondida);
+      pips[i].classList.toggle("cheio", respondida);
+    });
+
+    var c = comodo();
+    document.getElementById("q0").classList.toggle("respondida", c !== "");
+    ondePlacar.textContent = c ? NOMES[c] : "do lugar";
+    seloOnde.textContent = c ? "Ficha · " + NOMES[c] : "Ficha do lugar";
+
+    conta.textContent = n + " de " + TOTAL;
+    if (porToque && n !== antes) {
+      conta.classList.remove("bate");
+      void conta.offsetWidth;
+      conta.classList.add("bate");
+    }
+
+    var completa = n === TOTAL;
+    var chegou = completa && antes !== TOTAL;
+    ficha.classList.toggle("completa", completa);
+    if (chegou && porToque) {
+      ficha.classList.remove("carimbando");
+      void ficha.offsetWidth;
+      ficha.classList.add("carimbando");
+    }
+    if (!completa) ficha.classList.remove("carimbando");
+    limpar.hidden = n === 0 && c === "";
+
+    if (!completa) {
+      var falta = TOTAL - n;
+      espera.textContent = (falta === 1 ? "Falta " : "Faltam ") + EXTENSO[falta];
+      linha.textContent = n === 0 ? "Responde as quatro e o carimbo sai aqui." : "O carimbo sai com as quatro.";
+      ficha.removeAttribute("data-res");
+      ficha.removeAttribute("data-longe");
+    } else {
+      // 3 ou 4 = pensar longe; 0 ou 1 = executar; empate = decide o teto
+      var res = longe >= 3 ? "longe" : longe <= 1 ? "perto" : (e.charAt(0) === "l" ? "longe" : "perto");
+      seloPara.textContent = RESULTADOS[res][0];
+      linha.textContent = RESULTADOS[res][1];
+      ficha.setAttribute("data-res", res);
+      ficha.setAttribute("data-longe", longe);
+    }
+    antes = n;
+  }
+
+  var salvo = guarda ? ler() : {};
+  aplicar(guarda ? salvo.r : pedido, guarda ? salvo.c : pedidoComodo);
+  perguntas.forEach(function (q) {
+    [q.l, q.p].forEach(function (r) {
+      r.addEventListener("change", function () { gravar({ r: estado() }); atualizar(true); });
+    });
+  });
+  comodos.forEach(function (r) {
+    r.addEventListener("change", function () { gravar({ c: comodo() }); atualizar(false); });
+  });
+
+  limpar.addEventListener("click", function () {
+    aplicar("", "");
+    gravar({ r: "", c: "" });
+    atualizar(true);
+    ficha.scrollIntoView({ block: "start" });
+  });
+
+  window.addEventListener("hashchange", function () {
+    var novo = daUrl("r", "[lp\\-]*");
+    if (novo === null) return;
+    guarda = false;
+    aplicar(novo, daUrl("c", "[a-z]*"));
+    atualizar(false);
+  });
+
+  atualizar(false);
+
+  // ---------- o desafio: relógio de dez minutos e a nota que só fica neste aparelho
+  var DURACAO = 10 * 60 * 1000;
+  var desafio = document.getElementById("desafio");
+  var tempo = document.getElementById("tempo");
+  var btn = document.getElementById("relogio-btn");
+  var zerar = document.getElementById("relogio-zerar");
+  var aviso = document.getElementById("aviso-tempo");
+  var resta = DURACAO, fim = 0, tique = null;
+
+  function mostra(ms) {
+    var s = Math.max(0, Math.ceil(ms / 1000));
+    tempo.textContent = Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2);
+  }
+  function passo() {
+    resta = fim - Date.now();
+    mostra(resta);
+    if (resta <= 0) {
+      clearInterval(tique); tique = null; resta = 0;
+      desafio.classList.remove("correndo");
+      desafio.classList.add("acabou");
+      tempo.textContent = "0:00";
+      btn.textContent = "De novo";
+      aviso.textContent = "Acabou. O que apareceu?";
+    }
+  }
+  btn.addEventListener("click", function () {
+    if (tique) {                       // pausar
+      clearInterval(tique); tique = null;
+      resta = fim - Date.now();
+      desafio.classList.remove("correndo");
+      btn.textContent = "Continuar";
+      aviso.textContent = "Pausado.";
+      return;
+    }
+    if (resta <= 0) resta = DURACAO;   // de novo
+    desafio.classList.remove("acabou");
+    desafio.classList.add("correndo");
+    fim = Date.now() + resta;
+    tique = setInterval(passo, 250);
+    passo();
+    btn.textContent = "Pausar";
+    zerar.hidden = false;
+    aviso.textContent = "Deixa o celular de lado. Eu aviso aqui quando acabar.";
+  });
+  zerar.addEventListener("click", function () {
+    clearInterval(tique); tique = null;
+    resta = DURACAO;
+    desafio.classList.remove("correndo", "acabou");
+    mostra(resta);
+    btn.textContent = "Começar";
+    zerar.hidden = true;
+    aviso.textContent = "";
+  });
+
+  var nota = document.getElementById("nota");
+  var guardado = document.getElementById("guardado");
+  var espera2 = null;
+  if (guarda && salvo.nota) nota.value = salvo.nota;
+  nota.addEventListener("input", function () {
+    clearTimeout(espera2);
+    guardado.classList.remove("mostra");
+    espera2 = setTimeout(function () {
+      if (!guarda) return;
+      gravar({ nota: nota.value });
+      guardado.classList.add("mostra");
+    }, 450);
+  });
+})();
+</script>
+</body>
+</html>
